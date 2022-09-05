@@ -277,6 +277,10 @@ class SimpleHeff1(scipy.sparse.linalg.LinearOperator):
         x = np.reshape(x, self.shape[0])
         return x
 
+    def _adjoint(self):
+        """Define self as hermitian."""
+        return self
+
 
 class SimpleHeff0(scipy.sparse.linalg.LinearOperator):
     """Class for the effective Hamiltonian.
@@ -306,6 +310,10 @@ class SimpleHeff0(scipy.sparse.linalg.LinearOperator):
         x = np.tensordot(x, self.RP, axes=([1, 2], [1, 0]))  # vL [wL*] [vL*] , [vR*] [wR*] vR
         x = np.reshape(x, self.shape[0])
         return x
+
+    def _adjoint(self):
+        """Define self as hermitian."""
+        return self
 
 
 def example_TDVP_tf_ising_lightcone(L, g, tmax, dt, one_site=True, chi_max=50):

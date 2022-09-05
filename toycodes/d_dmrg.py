@@ -163,6 +163,10 @@ class SimpleHeff2(scipy.sparse.linalg.LinearOperator):
         x = np.reshape(x, self.shape[0])
         return x
 
+    def _adjoint(self):
+        """Define self as hermitian."""
+        return self
+
 
 def example_DMRG_tf_ising_finite(L, g, chi_max=20):
     print("finite DMRG, transverse field Ising")
