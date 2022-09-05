@@ -9,6 +9,8 @@ All files for this are in the folder `toycodes`, and you need to look into them 
 
 In the second part, we will use the [TeNPy](https://github.com/tenpy/tenpy) library to setup more advanced calculations in the folder `tenpy`.
 
+**DISCLAIMER**: the toycodes and examples used are not optimized, and we only use very small bond dimensions here. For state-of-the-art MPS calculations (especially for cylinders towards 2D), `chi` should be significantly larger, often on the order of several 1000s.
+
 ## Some References
 
 - [White, PRL 69, 2863 (1992)](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.69.2863), the original DMRG paper!
