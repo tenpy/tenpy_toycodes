@@ -65,6 +65,7 @@ class TFIModel:
                 if i + 1 == self.L - 1:
                     gR = self.g
             H_bond = -self.J * np.kron(sx, sx) - gL * np.kron(sz, id) - gR * np.kron(id, sz)
+            # note: kron is short-hand for outer product + grouping bra and ket legs.
             # H_bond has legs ``i, j, i*, j*``
             H_list.append(np.reshape(H_bond, [d, d, d, d]))
         self.H_bonds = H_list

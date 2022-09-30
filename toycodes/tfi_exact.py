@@ -13,7 +13,7 @@ import warnings
 import scipy.integrate
 
 
-def finite_gs_energy(L, J, g):
+def finite_gs_energy(L, J, g, return_psi=False):
     """For comparison: obtain ground state energy from exact diagonalization.
 
     Exponentially expensive in L, only works for small enough `L` <~ 20.
@@ -46,6 +46,8 @@ def finite_gs_energy(L, J, g):
         H_z = H_z + sz_list[i]
     H = -J * H_xx - g * H_z
     E, V = eigsh(H, k=1, which='SA', return_eigenvectors=True, ncv=20)
+    if return_psi:
+        return E[0], V[:, 0]
     return E[0]
 
 
