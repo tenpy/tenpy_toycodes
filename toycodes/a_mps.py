@@ -3,9 +3,6 @@
 
 import numpy as np
 from scipy.linalg import svd
-# if you get an error message "LinAlgError: SVD did not converge",
-# uncomment the following line. (This requires TeNPy to be installed.)
-#  from tenpy.linalg.svd_robust import svd  # (works like scipy.linalg.svd)
 
 import warnings
 
@@ -147,7 +144,7 @@ class SimpleMPS:
         return C
 
 
-def init_FM_MPS(L, d, bc='finite'):
+def init_FM_MPS(L, d=2, bc='finite'):
     """Return a ferromagnetic MPS (= product state with all spins up)"""
     B = np.zeros([1, d, 1], dtype=float)
     B[0, 0, 0] = 1.
@@ -157,7 +154,7 @@ def init_FM_MPS(L, d, bc='finite'):
     return SimpleMPS(Bs, Ss, bc=bc)
 
 
-def init_Neel_MPS(L, d, bc='finite'):
+def init_Neel_MPS(L, d=2, bc='finite'):
     """Return a Neel state MPS (= product state with alternating spins up  down up down... )"""
     S = np.ones([1], dtype=float)
     Bs = []

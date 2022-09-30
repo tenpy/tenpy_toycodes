@@ -2,7 +2,7 @@
 
 The Hamiltonian reads
 .. math ::
-    H = - J \\sum_{i} \\sigma^x_i \\sigma^x_{i+1} - g \\sum_{i} \\sigma^z_i
+    H = - J \\sum_{i} \\sigma^z_i \\sigma^z_{i+1} - g \\sum_{i} \\sigma^x_i
 """
 # Copyright 2019-2021 TeNPy Developers, GNU GPLv3
 
@@ -38,13 +38,13 @@ def finite_gs_energy(L, J, g, return_psi=False):
             Z = sparse.kron(Z, z_ops[j], 'csr')
         sx_list.append(X)
         sz_list.append(Z)
-    H_xx = sparse.csr_matrix((2**L, 2**L))
-    H_z = sparse.csr_matrix((2**L, 2**L))
+    H_zz = sparse.csr_matrix((2**L, 2**L))
+    H_x = sparse.csr_matrix((2**L, 2**L))
     for i in range(L - 1):
-        H_xx = H_xx + sx_list[i] * sx_list[(i + 1) % L]
+        H_zz = H_zz + sz_list[i] * sz_list[(i + 1) % L]
     for i in range(L):
-        H_z = H_z + sz_list[i]
-    H = -J * H_xx - g * H_z
+        H_x = H_x + sx_list[i]
+    H = -J * H_zz - g * H_x
     E, V = eigsh(H, k=1, which='SA', return_eigenvectors=True, ncv=20)
     if return_psi:
         return E[0], V[:, 0]

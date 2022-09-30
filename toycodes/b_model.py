@@ -5,11 +5,11 @@ import numpy as np
 
 
 class TFIModel:
-    """Simple class generating the Hamiltonian of the transverse-field Ising model.
+    r"""Simple class generating the Hamiltonian of the transverse-field Ising model.
 
     The Hamiltonian reads
     .. math ::
-        H = - J \\sum_{i} \\sigma^x_i \\sigma^x_{i+1} - g \\sum_{i} \\sigma^z_i
+        H = - J \sum_{i} \sigma^z_i \sigma^z_{i+1} - g \sum_{i} \sigma^x_i
 
     Parameters
     ----------
@@ -53,7 +53,7 @@ class TFIModel:
 
         Called by __init__().
         """
-        sx, sz, id = self.sigmax, self.sigmaz, self.id
+        X, Z, Id = self.sigmax, self.sigmaz, self.id
         d = self.d
         nbonds = self.L - 1 if self.bc == 'finite' else self.L
         H_list = []
@@ -64,7 +64,7 @@ class TFIModel:
                     gL = self.g
                 if i + 1 == self.L - 1:
                     gR = self.g
-            H_bond = -self.J * np.kron(sx, sx) - gL * np.kron(sz, id) - gR * np.kron(id, sz)
+            H_bond = -self.J * np.kron(Z, Z) - gL * np.kron(X, Id) - gR * np.kron(Id, X)
             # note: kron is short-hand for outer product + grouping bra and ket legs.
             # H_bond has legs ``i, j, i*, j*``
             H_list.append(np.reshape(H_bond, [d, d, d, d]))
@@ -80,8 +80,8 @@ class TFIModel:
         for i in range(self.L):
             w = np.zeros((3, 3, self.d, self.d), dtype=float)
             w[0, 0] = w[2, 2] = self.id
-            w[0, 1] = self.sigmax
-            w[0, 2] = -self.g * self.sigmaz
-            w[1, 2] = -self.J * self.sigmax
+            w[0, 1] = self.sigmaz
+            w[0, 2] = -self.g * self.sigmax
+            w[1, 2] = -self.J * self.sigmaz
             w_list.append(w)
         self.H_mpo = w_list
