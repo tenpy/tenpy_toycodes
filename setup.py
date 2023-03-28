@@ -8,5 +8,5 @@
 from setuptools import setup
 
 setup(name='tenpy-toycodes',
-      version='0.1.0',
-      packages=['toycodes'])
+      version='0.1.1',
+      packages=['tenpy_toycodes'])

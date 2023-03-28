@@ -6,9 +6,9 @@ This "main" branch keeps a general set of notebooks that can be used as an intro
 
 The tutorials are split into two parts as follows.
 
-In the first part, the `exercise_1_*.ipynb` notebooks use a set of small "toy codes" that require only [Python](https://python.org) with [numpy](https://numpy.org) + [scipy](https://scipy.org) + [matplotlib](https://matplotlib.org), and should give you a good idea how the algorithms work. The python files for this are in the folder `toycodes`, and you need to look into them during the tutorials to see how they work. It should not be necessary to modify the python files, however; you can define all functions etc in the notebooks itself. This will ensure that the other notebooks using them keep working.
+In the first part, the `exercise_1_*.ipynb` notebooks use a set of small "toy codes" that require only [Python](https://python.org) with [numpy](https://numpy.org) + [scipy](https://scipy.org) + [matplotlib](https://matplotlib.org), and should give you a good idea how the algorithms work. The python files for this are in the folder `tenpy_toycodes`, and you need to look into them during the tutorials to see how they work. It should not be necessary to modify the python files, however; you can define all functions etc in the notebooks itself. This will ensure that the other notebooks using them keep working.
 
-The `exercise_2_*.ipynb` notebooks are for the second part, and they use the [TeNPy](https://github.com/tenpy/tenpy) library to setup more advanced calculations.
+The `exercise_tenpy.ipynb` notebook is for the second part, and they use the [TeNPy](https://github.com/tenpy/tenpy) library to setup more advanced calculations.
 
 **DISCLAIMER**: the toycodes and examples used are not optimized, and we only use very small bond dimensions here to make sure everything runs quickly on a normal laptop. For state-of-the-art MPS calculations (especially for cylinders towards 2D), `chi` should be significantly larger, often on the order of several 1000s (and significantly more CPU time).
 
@@ -34,7 +34,7 @@ For the second part, you need to [install TeNPy](https://tenpy.readthedocs.io/en
 **Running notebooks on Google colab**: You can also use [Google's colab cloud service](https://colab.research.google.com) to run the jupyter notebooks **without any local installation**. Use this option if you have any trouble with your local installation. However, you have to perform addiontal installs:
 - For the first part, `exercise_1_*.ipynb`, you need to make sure that you not only copy the notebooks itself onto google colab, but also the `toycodes/` folder (including the `__init__.py` file). 
   Alternatively, install them by adding and executing a notebook cell `!pip install git+https://github.com/tenpy/tenpy_toycodes.git` at the top of the notebooks.
-- For the second part, `exercise_2_*.ipynb`, you need to install TeNPy. On google colab, this can be done by adding and executing a notebook cell `!pip install physics-tenpy` at the top of the notebook.
+- For the second part, `exercise_tenpy.ipynb`, you need to install TeNPy. On google colab, this can be done by adding and executing a notebook cell `!pip install physics-tenpy` at the top of the notebook.
 
 
 ## License
