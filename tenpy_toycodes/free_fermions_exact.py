@@ -88,14 +88,14 @@ if __name__ == "__main__":
     h_staggered = 1.
     time_list = np.linspace(0, 20., 100)
     for h_s in [0., 1., 2.]:
-        S_list = XX_model_comparison_entropies(L, h_s, time_list)
+        S_list = XX_model_time_evolved_entropies(L, h_s, time_list)
         plt.plot(time_list, S_list, label="$h_s = {h_s:1.1f}$".format(h_s=h_s))
     h_s = 0.
-    S_list = XX_model_comparison_entropies(L, h_s, time_list,
+    S_list = XX_model_time_evolved_entropies(L, h_s, time_list,
                                            boundary_conditions='periodic')
     plt.plot(time_list, S_list, linestyle='--',
              label="$h_s = {h_s:1.1f}$, periodic".format(h_s=h_s))
-    S_list = XX_model_comparison_entropies(10, h_s, time_list)
+    S_list = XX_model_time_evolved_entropies(10, h_s, time_list)
     plt.plot(time_list, S_list, linestyle=':',
              label="$h_s = {h_s:1.1f}, L=10$".format(h_s=h_s))
 
