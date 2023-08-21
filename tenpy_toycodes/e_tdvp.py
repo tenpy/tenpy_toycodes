@@ -239,6 +239,10 @@ class SimpleTDVPEngine:
 
     def expm_multiply(self, H, psi0, dt):
         from scipy.sparse.linalg import expm_multiply
+        from packaging import version
+        if version.parse(scipy.__version__) >= version.parse('1.9.0'):
+            traceH = H.trace()  # new argument introduced in scipy 1.9.0
+            return expm_multiply((-1.j*dt) * H, psi0, traceA =1.j*dt*traceH)
         return expm_multiply((-1.j*dt) * H, psi0)
         #  # alternatively, use custom lanczos implementation
         #  from .lanczos import lanczos_expm_multiply
@@ -281,6 +285,16 @@ class SimpleHeff1(scipy.sparse.linalg.LinearOperator):
         """Define self as hermitian."""
         return self
 
+    def trace(self):
+        """The trace of the operator.
+
+        Only needed for expm_multiply in scipy version > 1.9.0 to avoid warnings,
+        but cheap to calculate anyways.
+        """
+        return np.inner(np.trace(self.LP, axis1=0, axis2=2),          # [vL] wL* [vL*]
+                        np.dot(np.trace(self.W1, axis1=2, axis2=3),   # wL wR [i] [i*]
+                               np.trace(self.RP, axis1=0, axis2=2)))  # [vR*] wL [vR*]
+
 
 class SimpleHeff0(scipy.sparse.linalg.LinearOperator):
     """Class for the effective Hamiltonian.
@@ -314,6 +328,15 @@ class SimpleHeff0(scipy.sparse.linalg.LinearOperator):
     def _adjoint(self):
         """Define self as hermitian."""
         return self
+
+    def trace(self):
+        """The trace of the operator.
+
+        Only needed for expm_multiply in scipy version > 1.9.0 to avoid warnings,
+        but cheap to calculate anyways.
+        """
+        return np.inner(np.trace(self.LP, axis1=0, axis2=2),  # [vL] wL* [vL*]
+                        np.trace(self.RP, axis1=0, axis2=2))  # [vR*] wR* [vR]
 
 
 def example_TDVP_tf_ising_lightcone(L, g, tmax, dt, one_site=True, chi_max=50):
