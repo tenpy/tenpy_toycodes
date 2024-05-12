@@ -167,6 +167,17 @@ class SimpleHeff2(scipy.sparse.linalg.LinearOperator):
         """Define self as hermitian."""
         return self
 
+    def trace(self):
+        """The trace of the operator.
+
+        Only needed in e_tdvp.py in expm_multiply for scipy version > 1.9.0 to avoid warnings,
+        but cheap to calculate anyways.
+        """
+        return np.inner(np.trace(self.LP, axis1=0, axis2=2),                  # [vL] wL* [vL*]
+                        np.dot(np.trace(self.W1, axis1=2, axis2=3),           # wL wC [i] [i*]
+                               np.dot(np.trace(self.W2, axis1=2, axis2=3),    # wC wR [j] [j*]
+                                      np.trace(self.RP, axis1=0, axis2=2))))  # [vR*] wR* [vR]
+
 
 def example_DMRG_tf_ising_finite(L, g, chi_max=20):
     print("finite DMRG, transverse field Ising")

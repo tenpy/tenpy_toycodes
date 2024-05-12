@@ -293,7 +293,7 @@ class SimpleHeff1(scipy.sparse.linalg.LinearOperator):
         """
         return np.inner(np.trace(self.LP, axis1=0, axis2=2),          # [vL] wL* [vL*]
                         np.dot(np.trace(self.W1, axis1=2, axis2=3),   # wL wR [i] [i*]
-                               np.trace(self.RP, axis1=0, axis2=2)))  # [vR*] wL [vR*]
+                               np.trace(self.RP, axis1=0, axis2=2)))  # [vR*] wR* [vR]
 
 
 class SimpleHeff0(scipy.sparse.linalg.LinearOperator):
