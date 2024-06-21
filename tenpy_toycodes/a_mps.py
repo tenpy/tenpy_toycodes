@@ -89,8 +89,9 @@ class SimpleMPS:
         bonds = range(1, self.L) if self.bc == 'finite' else range(0, self.L)
         result = []
         for i in bonds:
-            S = self.Ss[i].copy()
-            S[S < 1.e-20] = 0.  # 0*log(0) should give 0; avoid warning or NaN.
+            S = self.Ss[i]
+            S = S[S > 1.e-20]  # 0*log(0) should give 0 and won't contribute to the sum
+            # avoid warning or NaN by discarding the very small values of S
             S2 = S * S
             assert abs(np.linalg.norm(S) - 1.) < 1.e-13
             result.append(-np.sum(S2 * np.log(S2)))
