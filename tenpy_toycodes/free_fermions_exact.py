@@ -1,5 +1,5 @@
 r"""Provides exact entropies for time evolution of free fermion models."""
-# Copyright (C) TeNPy Developers, GNU GPLv3
+# Copyright (C) TeNPy Developers, Apache license
 
 import numpy as np
 import matplotlib.pyplot as plt

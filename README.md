@@ -41,5 +41,5 @@ For the second part, you need to [install TeNPy](https://tenpy.readthedocs.io/en
 
 ## License
 
-All codes are released under GPL (v3) given in the file `LICENSE`, which means you can freely copy, share and distribute the code.
-They toycodes in the folder `tenpy_toycodes` have formerly been distributed directly from the [TeNPy](https://github.com/tenpy/tenpy) repository (also under the GPL).
+All codes are released under the Apache license given in the file `LICENSE`, which means you can freely copy, share and distribute the code.
+They toycodes in the folder `tenpy_toycodes` have formerly been distributed directly from the [TeNPy](https://github.com/tenpy/tenpy) repository - originally under the GPL v3 license, see also [this issue on the license change](https://github.com/tenpy/tenpy/issues/462).

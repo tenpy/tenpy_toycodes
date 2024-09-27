@@ -1,5 +1,5 @@
 """Toy code implementing the transverse-field ising model."""
-# Copyright (C) TeNPy Developers, GNU GPLv3
+# Copyright (C) TeNPy Developers, Apache license
 
 import numpy as np
 

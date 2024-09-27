@@ -1,5 +1,5 @@
 """Toy code implementing a matrix product state."""
-# Copyright (C) TeNPy Developers, GNU GPLv3
+# Copyright (C) TeNPy Developers, Apache license
 
 import numpy as np
 from scipy.linalg import svd
