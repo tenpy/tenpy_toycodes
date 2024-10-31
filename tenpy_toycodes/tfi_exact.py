@@ -72,7 +72,7 @@ def infinite_gs_energy(J, g):
     """For comparison: Calculate ground state energy density from analytic formula.
     
     Compared to the above formula, we replace sum_k -> integral dk/2pi, to obtain the ground state 
-    density in the thermodynamic limit.
+    energy density in the thermodynamic limit.
     """
     e0_exact = -1 / (2 * np.pi) * scipy.integrate.quad(epsilon, -np.pi, np.pi, args=(J, g))[0]/2
     return e0_exact
