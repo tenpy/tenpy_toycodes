@@ -72,9 +72,9 @@ class VUMPSEngine:
         """
         H_eff_1 = Heff1(self.h, self.Lh, self.psi.AL, self.psi.AR, self.Rh)
         H_eff_0 = Heff0(self.h, self.Lh, self.psi.AL, self.psi.AR, self.Rh)
-        AC_new = self.get_theta_gs(Heff=H_eff_1, guess=self.psi.AC)  # vL p vR
-        C_new = self.get_theta_gs(Heff=H_eff_0, guess=self.psi.C)  # vL vR
-        AL_new, AR_new = get_AL_AR(AC_new, C_new)  # vL p vR
+        AC_new = self.get_theta_gs(Heff=H_eff_1, guess=self.psi.AC)  
+        C_new = self.get_theta_gs(Heff=H_eff_0, guess=self.psi.C)  
+        AL_new, AR_new = get_AL_AR(AC_new, C_new)  
         self.psi = UniformMPS(AL_new, AR_new, AC_new, C_new)
         self.h = subtract_energy_offset(self.psi, self.h, canonical_form=False)
         self.Lh = get_Lh(self.psi, self.h, canonical_form=False, guess=self.Lh, tol=self.tol)
@@ -157,6 +157,8 @@ class VUMPSEngine:
         var = var1 + var2 + var3 + var4 + var5
         return var
 
+
+# Classes and functions used both vor VUMPS and uTDVP
 
 class Heff1(LinearOperator):
     """Class for the effective Hamiltonian acting on the center site tensor AC.
