@@ -231,20 +231,16 @@ class UniformMPS:
         canonical_form = np.zeros(4)
         Id = np.eye(self.D)  # vR vR* or vL vL*
         Id_L = np.tensordot(self.AL, np.conj(self.AL), axes=((0, 1), (0, 1)))
-        # [vL] [p] vR, [vL*] [p*] vR*
+        # [vL] [p] vR, [vL*] [p*] vR* -> vR vR*
         Id_R = np.tensordot(self.AR, np.conj(self.AR), axes=((1, 2), (1, 2)))
-        # vL [p] [vR], vL* [p*] [vR*]
-        canonical_form[0] = np.linalg.norm(np.reshape(Id, (self.D * self.D)) \
-                                           - np.reshape(Id_L, (self.D * self.D)))  
-        canonical_form[1] = np.linalg.norm(np.reshape(Id, (self.D * self.D)) \
-                                           - np.reshape(Id_R, (self.D * self.D))) 
+        # vL [p] [vR], vL* [p*] [vR*] -> vL vL*
+        canonical_form[0] = np.linalg.norm(Id_L - Id)  
+        canonical_form[1] = np.linalg.norm(Id_R - Id) 
         AC = self.AC  # vL p vR
-        AC_L = np.tensordot(self.AL, self.C, axes=(2, 0))  # vL p [vR], [vL] vR
-        AC_R = np.tensordot(self.C, self.AR, axes=(1, 0))  # vL [vR], [vL] p vR
-        canonical_form[2] = np.linalg.norm(np.reshape(AC, (self.D * self.d * self.D)) \
-                                           - np.reshape(AC_L, (self.D * self.d * self.D)))
-        canonical_form[3] = np.linalg.norm(np.reshape(AC, (self.D * self.d * self.D)) \
-                                           - np.reshape(AC_R, (self.D * self.d * self.D)))
+        AC_L = np.tensordot(self.AL, self.C, axes=(2, 0))  # vL p [vR], [vL] vR -> vL p vR
+        AC_R = np.tensordot(self.C, self.AR, axes=(1, 0))  # vL [vR], [vL] p vR -> vL p vR
+        canonical_form[2] = np.linalg.norm(AC_L - AC)
+        canonical_form[3] = np.linalg.norm(AC_R - AC)
         return canonical_form
     
     def to_diagonal_gauge(self):
