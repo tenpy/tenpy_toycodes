@@ -146,7 +146,7 @@ class UniformMPS:
     
     @classmethod
     def from_infinite_MPS(cls, psi):
-        """Iff translation invariant, convert infinite MPS to UniformMPS.
+        """Iff translation invariant, convert infinite MPS instance to UniformMPS instance.
 
         |psi(B1,...,BL)> = |psi(BL,B1,...,BL-1)> 
         <-> T_{(B1,...,BL)(BL,B1,...,BL-1)}|U> = |U> with unitary U
@@ -164,32 +164,32 @@ class UniformMPS:
             return cls.from_non_canonical_tensor(B)
 
     def to_infinite_MPS(self, L=1):
-        """Convert UniformMPS to infinite MPS with L-site unit cell."""
+        """Convert UniformMPS instance to infinite MPS instance with L-site unit cell."""
         self.to_diagonal_gauge()
         B = self.AR
         S = np.diag(self.C)
         return SimpleMPS(Bs=[B]*L, Ss=[S]*L, bc="infinite")
       
     def copy(self):
-        """Create a copy of UniformMPS."""
+        """Create a copy of the UniformMPS instance."""
         return UniformMPS(self.AL.copy(), self.AR.copy(), self.AC.copy(), self.C.copy())
         
     def get_theta2(self):
         """Compute the effective two-site state theta2.
         
-        Diagrammatic representation:    --(theta2)--  =  --(AL)--(AC)--
-                                            |  |            |     |
+        --(theta2)--  =  --(AL)--(AC)--
+            |  |            |     |
         """
         return np.tensordot(self.AL, self.AC, axes=(2, 0))  # vL p1 [vR], [vL] p2 vR
         
     def get_site_expectation_value(self, op1):
         """Compute the expectation value of a one-site operator op1.
         
-                                        .--(theta1)--.     .--(AC)--.
-                                        |     |      |     |   |    |
-        Diagrammatic representation:    |   (op1)    |  =  | (op1)  |
-                                        |     |      |     |   |    |
-                                        .--(theta1*)-.     .--(AC*)-.
+               .--(theta1)--.     .--(AC)--.
+               |     |      |     |   |    |
+        e1  =  |   (op1)    |  =  | (op1)  |
+               |     |      |     |   |    |
+               .--(theta1*)-.     .--(AC*)-.
         """
         assert np.shape(op1) == (self.d, self.d)
         theta1 = self.AC  # vL p vR
@@ -201,11 +201,11 @@ class UniformMPS:
     def get_bond_expectation_value(self, op2):
         """Compute the expectation value of a two-site operator op2.
         
-                                        .--(theta2)--.  
-                                        |    | |     |
-        Diagrammatic representation:    |   (op2)    |
-                                        |    | |     |
-                                        .--(theta2*)-.
+               .--(theta2)--.  
+               |    | |     |
+        e2  =  |   (op2)    |
+               |    | |     |
+               .--(theta2*)-.
         """
         assert np.shape(op2) == (self.d, self.d, self.d, self.d)
         theta2 = self.get_theta2()  # vL p1 p2 vR
@@ -217,7 +217,7 @@ class UniformMPS:
         return np.real_if_close(theta2_op2_theta2)
     
     def test_canonical_form(self):
-        """Test the canonical form of UniformMPS.
+        """Test the canonical form of the UniformMPS instance.
          
             .--(AL)--     .--         --(AR)--.     --.
             |   |         |              |    |       |
@@ -244,7 +244,7 @@ class UniformMPS:
         return canonical_form
     
     def to_diagonal_gauge(self):
-        """Bring UniformMPS to normalized diagonal gauge with diagonal C.
+        """Bring the UniformMPS instance to normalized diagonal gauge.
          
         Compute SVD C=USV and transform: --(AL)--  ->  --(U^{dagger})--(AL)--(U)--,
                                             |                           |
@@ -263,16 +263,16 @@ class UniformMPS:
         self.AC = np.tensordot(self.AL, self.C, axes=(2, 0))  # vL p [vR], [vL] vR
     
     def get_entanglement_entropy(self):
-        """Compute the entanglement entropy for a bipartition of UniformMPS.
+        """Compute the entanglement entropy for a bipartition of the UniformMPS instance.
 
-        Bring UniformMPS to diagonal C and compute S = -sum_{alpha=1}^D c_{alpha}^2 log(c_{alpha}^2).
+        S = -sum_{alpha=1}^D c_{alpha}^2 log(c_{alpha}^2) with c_{alpha} the singular values of C.
         """
-        _, S, _ = svd(self.C)
-        S = S[S > 1.e-20] # 0*log(0) should give 0 and won't contribute to the sum
+        _, C, _ = svd(self.C)
+        C = C[C > 1.e-20] # 0*log(0) should give 0 and won't contribute to the sum
         # avoid warning or NaN by discarding the very small values of S
-        assert abs(np.linalg.norm(S) - 1.) < 1.e-13
-        S2 = S * S
-        return -np.sum(S2 * np.log(S2))
+        assert abs(np.linalg.norm(C) - 1.) < 1.e-13
+        C2 = C * C
+        return -np.sum(C2 * np.log(C2))
     
     def get_correlation_length(self):
         """Compute the correlation length by diagonalizing the transfer matrix.
