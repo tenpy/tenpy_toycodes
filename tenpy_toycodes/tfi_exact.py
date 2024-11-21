@@ -1,8 +1,11 @@
-"""Provides exact ground state energies for the transverse field ising model for comparison.
+"""Provides exact ground state (and excitation) energies for the transverse field ising model.
 
 The Hamiltonian reads
 .. math ::
     H = - J \\sum_{i} \\sigma^z_i \\sigma^z_{i+1} - g \\sum_{i} \\sigma^x_i
+
+For the exact analytical solution (in the thermodynamic limit) we use Subir Sachdev, Quantum Phase 
+Transitions, 2nd ed, Cambridge University Press, 2011.
 """
 # Copyright (C) TeNPy Developers, Apache license
 
@@ -51,16 +54,32 @@ def finite_gs_energy(L, J, g, return_psi=False):
     return E[0]
 
 
+"""
+By performing Jordan-Wigner, Fourier and Bogoliubov transformations, the TFI model with PBC can be
+diagonalized analytically. The Hamiltonian in terms of fermionic creation and annihilation operators
+\\gamma_{p}^{\\dagger} and \\gamma_{p} reads:
+
+H = (\\sum_{p} \\epsilon(p) \\gamma_{p}^{\\dagger}\\gamma_{p}) + E0.
+
+    - Single particle excitation energy: \\epsilon(p) = 2 \\sqrt{J^2 - 2Jg\\cos(p) + g^2}.
+
+    - Ground state energy: E0 = -\\sum_{p} \\epsilon(p)/2. 
+"""
+
+def epsilon(p, J, g):
+    return 2 * np.sqrt(J**2 - 2 * J * g * np.cos(p) + g**2)
+
 def infinite_gs_energy(J, g):
-    """For comparison: Calculate groundstate energy density from analytic formula.
-
-    The analytic formula stems from mapping the model to free fermions, see P. Pfeuty, The one-
-    dimensional Ising model with a transverse field, Annals of Physics 57, p. 79 (1970). Note that
-    we use Pauli matrices compared this reference using spin-1/2 matrices and replace the sum_k ->
-    integral dk/2pi to obtain the result in the N -> infinity limit.
+    """For comparison: Calculate ground state energy density from analytic formula.
+    
+    Compared to the above formula, we replace sum_k -> integral dk/2pi, to obtain the ground state 
+    energy density in the thermodynamic limit.
     """
-    def f(k, lambda_):
-        return np.sqrt(1 + lambda_**2 + 2 * lambda_ * np.cos(k))
+    e0_exact = -1 / (2 * np.pi) * scipy.integrate.quad(epsilon, -np.pi, np.pi, args=(J, g))[0]/2
+    return e0_exact
 
-    E0_exact = -g / (J * 2. * np.pi) * scipy.integrate.quad(f, -np.pi, np.pi, args=(J / g, ))[0]
-    return E0_exact
+def infinite_excitation_dispersion(J, g):
+    """For comparison: Calculate excitation dispersion relation from analytic formula."""
+    ps = np.arange(-np.pi, np.pi, 0.01)
+    es_exact = epsilon(ps, J, g)
+    return ps, es_exact
