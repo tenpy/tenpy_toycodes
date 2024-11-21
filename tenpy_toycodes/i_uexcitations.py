@@ -1,4 +1,9 @@
-"""Toy code implementing variational plane waxe excitations on top of a uMPS ground state."""
+"""Toy code implementing variational plane waxe excitations on top of a uMPS ground state.
+
+This implementation closely follows Laurens Vanderstraeten, Jutho Haegeman and Frank Verstraete, 
+Tangent-space methods for uniform matrix product states, SciPost Physics Lecture Notes 007, 2019, 
+https://arxiv.org/abs/1810.07006.
+"""
 
 import numpy as np
 from scipy.sparse.linalg import LinearOperator, eigsh
