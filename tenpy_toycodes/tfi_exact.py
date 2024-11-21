@@ -1,8 +1,11 @@
-"""Provides exact ground state energies for the transverse field ising model for comparison.
+"""Provides exact ground state (and excitation) energies for the transverse field ising model.
 
 The Hamiltonian reads
 .. math ::
     H = - J \\sum_{i} \\sigma^z_i \\sigma^z_{i+1} - g \\sum_{i} \\sigma^x_i
+
+For the exact analytical solution (in the thermodynamic limit) we use Subir Sachdev, Quantum Phase 
+Transitions, 2nd ed, Cambridge University Press, 2011.
 """
 # Copyright (C) TeNPy Developers, Apache license
 
@@ -52,7 +55,7 @@ def finite_gs_energy(L, J, g, return_psi=False):
 
 
 """
-By performing Jordan-Wigner, Fourier and Bogoliubov transformations, the tfi model can be
+By performing Jordan-Wigner, Fourier and Bogoliubov transformations, the TFI model with PBC can be
 diagonalized analytically. The Hamiltonian in terms of fermionic creation and annihilation operators
 \\gamma_{p}^{\\dagger} and \\gamma_{p} reads:
 
@@ -61,8 +64,6 @@ H = (\\sum_{p} \\epsilon(p) \\gamma_{p}^{\\dagger}\\gamma_{p}) + E0.
     - Single particle excitation energy: \\epsilon(p) = 2 \\sqrt{J^2 - 2Jg\\cos(p) + g^2}.
 
     - Ground state energy: E0 = -\\sum_{p} \\epsilon(p)/2. 
-
-For details see Subir Sachdev, Quantum Phase Transitions, 2nd ed, Cambridge University Press, 2011.
 """
 
 def epsilon(p, J, g):
