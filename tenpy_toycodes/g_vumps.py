@@ -1,4 +1,9 @@
-"""Toy code implementing the variational uniform matrix product states (VUMPS) algorithm."""
+"""Toy code implementing the variational uniform matrix product states (VUMPS) algorithm.
+
+This implementation closely follows Laurens Vanderstraeten, Jutho Haegeman and Frank Verstraete, 
+Tangent-space methods for uniform matrix product states, SciPost Physics Lecture Notes 007, 2019, 
+https://arxiv.org/abs/1810.07006.
+"""
 
 import numpy as np
 from scipy.sparse.linalg import LinearOperator, gmres, eigsh
@@ -7,17 +12,16 @@ from scipy.linalg import polar
 from .f_umps import UniformMPS, TransferMatrix
 
 
-def vumps_algorithm(h, guess_psi0, tol):
+def vumps_algorithm(h, guess_psi0, tol, maxruns=1_000):
     """Find the uMPS ground state of the Hamiltonian h with an initial guess up to tolerance tol."""
     vumps_engine = VUMPSEngine(guess_psi0, h, tol/10)
-    maxruns = 1_000
     for i in range(maxruns):
         vumps_engine.run()
         if vumps_engine.err <= tol:
             psi0 = vumps_engine.psi
             e0 = psi0.get_bond_expectation_value(h)
             var0 = vumps_engine.get_energy_variance()
-            print(f"Ground state converged up to tol={tol} in gradient norm. " \
+            print(f"uMPS ground state converged with VUMPS up to tol={tol} in gradient norm. " \
                   + f"Final error after {i+1} iterations: {vumps_engine.err}.\n" \
                   + f"Ground state energy density: {e0}. \n"
                   + f"Ground state variance density: {var0}.")
