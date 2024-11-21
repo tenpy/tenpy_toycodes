@@ -1,4 +1,9 @@
-"""Toy code implementing the uniform time dependent variational principle (uTDVP)."""
+"""Toy code implementing the uniform time dependent variational principle (uTDVP).
+
+This implementation closely follows Laurens Vanderstraeten, Jutho Haegeman and Frank Verstraete, 
+Tangent-space methods for uniform matrix product states, SciPost Physics Lecture Notes 007, 2019, 
+https://arxiv.org/abs/1810.07006.
+"""
 
 import numpy as np
 from scipy.sparse.linalg import expm_multiply
@@ -15,11 +20,13 @@ def utdvp_algorithm(psi0, h, dt, T):
     t = 0.
     ts.append(t)
     Ss.append(psi0.get_entanglement_entropy())
-    for i in range(int(T/dt)):
+    N_steps = int(T/dt + 0.5)
+    for i in range(N_steps):
         tdvp_engine.run(dt)
         t += dt
         ts.append(t)
         Ss.append(tdvp_engine.psi.get_entanglement_entropy())
+    print(f"uMPS evolved with TDVP up to time T={T} in steps of dt={dt}.")
     return ts, Ss
 
 
