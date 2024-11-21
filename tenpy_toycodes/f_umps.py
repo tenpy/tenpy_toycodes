@@ -1,4 +1,9 @@
-"""Toy code implementing a uniform matrix product state (uMPS) in the thermodynamic limit."""
+"""Toy code implementing a uniform matrix product state (uMPS) in the thermodynamic limit.
+
+This implementation (and also g_vumps.py, h_utdvp.py, i_uexcitations.py) closely follow 
+Laurens Vanderstraeten, Jutho Haegeman and Frank Verstraete, Tangent-space methods for uniform 
+matrix product states, SciPost Physics Lecture Notes 007, 2019, https://arxiv.org/abs/1810.07006.
+"""
 
 import numpy as np
 from scipy.linalg import qr, svd
@@ -44,7 +49,7 @@ class UniformMPS:
         self.d = np.shape(AL)[1]
 
     @staticmethod
-    def left_orthonormalize(A, tol=1.e-10):
+    def left_orthonormalize(A, tol=1.e-10, maxiter=10_000):
         """Left orthonormalize the tensor A by successive positive QR decompositions.
 
         --L(i)--A--  =  --AL(i+1)--L(i+1)--  until convergence up to tolerance tol.
@@ -53,7 +58,6 @@ class UniformMPS:
         D = np.shape(A)[0]
         d = np.shape(A)[1]
         L = np.random.normal(size=(D, D)) + 1.j*np.random.normal(size=(D, D))        
-        maxiter = 10_000
         for i in range(maxiter):
             L /= np.linalg.norm(L)  # vL vR
             L_old = L   
@@ -64,7 +68,7 @@ class UniformMPS:
             L /= np.linalg.norm(L)  # vL vR       
             err = np.linalg.norm(L - L_old)
             if err <= tol:
-                print(f"AL, L: Converged up to tol={tol}. Final error after {i} iterations: {err}.")
+                print(f"AL, L: Converged up to tol={tol}. Final error after {i+1} iterations: {err}.")
                 return AL, L        
             T = TransferMatrix([A], [AL], transpose=True)  # vL.vL* vR.vR*           
             _, L = T.get_leading_eigenpairs(k=1, guess=L)  # vR.vR*
@@ -74,7 +78,7 @@ class UniformMPS:
                            Final error after {maxiter} iterations: {err}.")
 
     @staticmethod      
-    def right_orthonormalize(A, tol=1.e-10):
+    def right_orthonormalize(A, tol=1.e-10, maxiter=10_000):
         """Right orthonormalize the tensor A by successive positive LQ decompositions.
 
         --A--R(i)--  =  --R(i+1)--AR(i+1)--  until convergence up to tolerance tol.
@@ -83,7 +87,6 @@ class UniformMPS:
         D = np.shape(A)[0]
         d = np.shape(A)[1]    
         R = np.random.normal(size=(D, D)) + 1.j*np.random.normal(size=(D, D))        
-        maxiter = 10_000
         for i in range(maxiter):
             R /= np.linalg.norm(R)  # vL vR
             R_old = R        
@@ -94,7 +97,7 @@ class UniformMPS:
             R /= np.linalg.norm(R)  # vL vR        
             err = np.linalg.norm(R - R_old)
             if err <= tol:
-                print(f"AR, R: Converged up to tol={tol}. Final error after {i} iterations: {err}.")
+                print(f"AR, R: Converged up to tol={tol}. Final error after {i+1} iterations: {err}.")
                 return AR, R        
             T = TransferMatrix([A], [AR])  # vL.vL* vR.vR*
             _, R = T.get_leading_eigenpairs(k=1, guess=R)  # vL.vL*
@@ -153,7 +156,7 @@ class UniformMPS:
         <-> |psi(B1,...,BL)> = |psi(B)> with single injective tensor B (choose B = U B_L)
         """
         Bs = psi.Bs  # [B1,...,BL]
-        Bs_translated = Bs[1:] + Bs[:1]  # [BL,B1,...,BL-1]
+        Bs_translated = Bs[-1:] + Bs[:-1]  # [BL,B1,...,BL-1]
         T = TransferMatrix(Bs, Bs_translated)
         lambda1, U = T.get_leading_eigenpairs(k=1)
         if np.abs(np.abs(lambda1) - 1.) > 1.e-8:
