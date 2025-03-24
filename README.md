@@ -2,15 +2,17 @@
 
 This is a set of tutorials used in various (Winter-/Summer-)Schools on Tensor Networks, e.g. from the [European Tensor Network](http://quantumtensor.eu/). Each school has it's on branch with the final notebooks used.
 
-This "main" branch keeps a general set of notebooks that can be used as an introduction and that forms the basis for the tutorials in the various schools, and is also included into the main TeNPy documentation.
+This particular branch is for the **ICFO Spring School on Open-Source Tools for Quantum Science & Technology** held in Castelldefels near Barcelona in March 2025.
 
 The tutorials are split into two parts as follows.
 
-In the first part, the `exercise_1_*.ipynb` notebooks use a set of small "toy codes", small python scripts that require only [Python](https://python.org) with [numpy](https://numpy.org) + [scipy](https://scipy.org) + [matplotlib](https://matplotlib.org). They should give you a good idea how the algorithms work without the need to understand a full library like TeNPy. 
+In the first part, the `exercise_[1-3]_*.ipynb` notebooks use a set of small "toy codes", small python scripts that require only [Python](https://python.org) with [numpy](https://numpy.org) + [scipy](https://scipy.org) + [matplotlib](https://matplotlib.org). They should give you a good idea how the algorithms work without the need to understand a full library like TeNPy. 
 These python files for this are in the folder `tenpy_toycodes`, and you need to look into them during the tutorials to see how they work. It should not be necessary to modify the python files, however; you can define all functions etc in the notebooks itself. This will ensure that the other notebooks using them keep working.
 The exercises itself are in interactive [jupyter notebooks](https://jupyter.org), where you can have code, output and plots together. 
 
-The `exercise_tenpy.ipynb` notebook is for the second part, and uses the [TeNPy](https://github.com/tenpy/tenpy) library to demonstrate first examples of calling TeNPy rather than the toycodes.
+The `exercise_4_tenpy.ipynb` notebook is for the second part, and uses the [TeNPy](https://github.com/tenpy/tenpy) library to demonstrate first examples of calling TeNPy rather than the toycodes.
+
+For that, open the [TeNPy Documentation](https://tenpy.readthedocs.io).
 
 **DISCLAIMER**: The toycodes and examples used are not optimized, and we only use very small bond dimensions here to make sure everything runs quickly on a normal laptop. For state-of-the-art MPS calculations (especially for cylinders towards 2D), `chi` should be significantly larger, often on the order of several 1000s (and significantly more CPU time).
 
